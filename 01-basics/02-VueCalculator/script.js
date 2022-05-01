@@ -5,8 +5,14 @@ const component = defineComponent({
     return {
       operand1: 0,
       operand2: 0,
+      functionType: 'sum',
       fnc(a, b) {
-        return a + b;
+        switch (this.functionType){
+          case 'sum': return a + b;
+          case 'subtract': return a - b;
+          case 'multiply': return a * b;
+          case 'divide': return a / b;
+        }
       }
     };
   },
@@ -22,10 +28,10 @@ const component = defineComponent({
         </div>
 
         <div class="col" style="display: flex; flex-direction: column; font-family: emoji">
-          <label><input type="radio" name="operator" value="sum" /> ➕</label>
-          <label><input type="radio" name="operator" value="subtract" /> ➖</label>
-          <label><input type="radio" name="operator" value="multiply" /> ✖</label>
-          <label><input type="radio" name="operator" value="divide" /> ➗</label>
+          <label><input type="radio" name="operator" value="sum" v-model=functionType /> ➕</label>
+          <label><input type="radio" name="operator" value="subtract" v-model=functionType /> ➖</label>
+          <label><input type="radio" name="operator" value="multiply" v-model=functionType /> ✖</label>
+          <label><input type="radio" name="operator" value="divide" v-model=functionType /> ➗</label>
         </div>
 
         <div class="col">
