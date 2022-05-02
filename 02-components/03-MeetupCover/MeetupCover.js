@@ -15,8 +15,14 @@ export default defineComponent({
     }
   },
 
+  computed: {
+    style: function() {
+      return this.image === null || this.image === undefined ? "" : `--bg-url: url('${this.image}')`;
+    }
+  },
+
   template: `
-    <div class="meetup-cover" :style="image === null ? null : \`--bg-url: url('\${image}')\`">
+    <div class="meetup-cover" :style=style >
         <h1 class="meetup-cover__title">{{ title }}</h1>
     </div>`,
 });
