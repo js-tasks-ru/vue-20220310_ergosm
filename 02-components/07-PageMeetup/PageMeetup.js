@@ -28,7 +28,7 @@ export default defineComponent({
     return {
       meetup: null,
 
-      loadError: false
+      loadError: null
     }
   },
 
@@ -46,8 +46,8 @@ export default defineComponent({
         this.meetup = null;
         this.meetup = await fetchMeetupById(this.meetupId);
       }
-      catch{
-        this.loadError = true;
+      catch(err){
+        this.loadError = err;
       }
     }
   },
@@ -58,6 +58,10 @@ export default defineComponent({
     }
   },
 
+  mounted() {
+    this.getMeetup();
+  },
+
   template: `
     <div class="page-meetup">
       <MeetupView v-if="meetup !== null" :meetup="meetup" />
@@ -66,8 +70,8 @@ export default defineComponent({
         <ui-alert>Загрузка...</ui-alert>
       </ui-container>
 
-      <ui-container v-if="loadError">
-        <ui-alert>error</ui-alert>
+      <ui-container v-if="loadError !== null">
+        <ui-alert>{{ loadError.message }}</ui-alert>
       </ui-container>
     </div>
     `,
