@@ -25,7 +25,7 @@ describe('components/MeetupInfo', () => {
       const wrapper = shallowMount(MeetupInfo, { props: { organizer, place, date } });
 
       expect(wrapper.find('li:nth-child(3)').text()).toContain(
-        new Date(date).toLocaleString(navigator.language, {
+        new Date(date).toLocaleString('ru-RU', {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
@@ -52,7 +52,7 @@ describe('components/MeetupInfo', () => {
       const wrapper = shallowMount(MeetupInfo, { props: { organizer, place, date } });
       await wrapper.setProps({ date: newDate });
       expect(wrapper.find('li:nth-child(3)').text()).toContain(
-        new Date(newDate).toLocaleString(navigator.language, {
+        new Date(newDate).toLocaleString('ru-RU', {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
