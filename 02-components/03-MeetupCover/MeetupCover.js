@@ -16,7 +16,7 @@ export default defineComponent({
   },
 
   template: `
-    <div class="meetup-cover" style="--bg-url: url('${this.image}')">
+    <div class="meetup-cover" :style="image === null ? null : \`--bg-url: url('\${image}')\`">
         <h1 class="meetup-cover__title">{{ title }}</h1>
     </div>`,
 });
