@@ -1,20 +1,19 @@
 <template>
-  <div class="dropdown dropdown_opened">
-    <button type="button" class="dropdown__toggle dropdown__toggle_icon">
-      <ui-icon icon="tv" class="dropdown__icon" />
-      <span>Title</span>
+  <div class="dropdown" :class="dropdownStateClass">
+    <button type="button" @click="toggle()" class="dropdown__toggle" :class="dropdownIcon">
+      <ui-icon v-if="selectedItem?.icon?.length > 0" :icon="selectedItem?.icon"  class="dropdown__icon" />
+      <span>{{ selectedTitle }}</span>
     </button>
 
-    <div class="dropdown__menu" role="listbox">
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <ui-icon icon="tv" class="dropdown__icon" />
-        Option 1
-      </button>
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <ui-icon icon="tv" class="dropdown__icon" />
-        Option 2
+    <div class="dropdown__menu" v-show="opened" role="listbox">
+      <button v-for="option in options" class="dropdown__item" :class="itemClass" @click="select(option.value)" role="option" type="button">
+        <ui-icon :icon="option.icon" class="dropdown__icon" />
+        {{ option.text }}
       </button>
     </div>
+    <select style="display: none;" :value="modelValue" @change="$emit('update:modelValue', value)" >
+      <option v-for="option in options" :value="option.value" >{{ option.text }}</option>
+    </select>
   </div>
 </template>
 
@@ -23,6 +22,64 @@ import UiIcon from './UiIcon';
 
 export default {
   name: 'UiDropdown',
+
+  data() {
+    return {
+      opened: false,
+
+    }
+  },
+
+  props: {
+    options: {
+      type: Array,
+      required: true,
+    },
+
+    modelValue: {
+      type: String,
+      required: false
+    },
+
+    title: {
+      type: String,
+      required: true
+    }
+
+  },
+
+  methods: {
+    toggle: function() {
+      this.opened = !this.opened;
+    },
+
+    select: function(value) {
+      this.toggle();
+      this.$emit('update:modelValue', value);
+    },
+  },
+
+  computed: {
+    dropdownStateClass: function () {
+      return this.opened ? "dropdown_opened" : "";
+    },
+
+    itemClass: function(){
+      return this.options.filter(x => x.icon !== undefined)?.length > 0 ? "dropdown__item_icon" : "";
+    },
+
+    dropdownIcon: function() {
+      return this.options.filter(x => x.icon !== undefined)?.length > 0 ? "dropdown__toggle_icon" : "";
+    },
+
+    selectedTitle: function() {
+      return this.modelValue !== null && this.modelValue !== undefined ? this.selectedItem.text : this.title;
+    },
+
+    selectedItem: function() {
+      return this.options.find(x => x.value === this.modelValue);
+    },
+  },
 
   components: { UiIcon },
 };
