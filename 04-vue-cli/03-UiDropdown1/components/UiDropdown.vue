@@ -1,17 +1,17 @@
 <template>
-  <div class="dropdown" :class="dropdownStateClass">
-    <button type="button" @click="toggle()" class="dropdown__toggle" :class="dropdownIcon">
+  <div class="dropdown" :class="{ 'dropdown_opened': opened }">
+    <button type="button" @click="toggle()" class="dropdown__toggle" :class="{ 'dropdown__toggle_icon': hasIcon }">
       <ui-icon v-if="selectedItem?.icon?.length > 0" :icon="selectedItem?.icon"  class="dropdown__icon" />
       <span>{{ selectedTitle }}</span>
     </button>
 
     <div class="dropdown__menu" v-show="opened" role="listbox">
-      <button v-for="option in options" class="dropdown__item" :class="itemClass" @click="select(option.value)" role="option" type="button">
+      <button v-for="option in options" class="dropdown__item" :class="{ 'dropdown__item_icon': hasIcon }" @click="select(option.value)" role="option" type="button">
         <ui-icon :icon="option.icon" class="dropdown__icon" />
         {{ option.text }}
       </button>
     </div>
-    <select style="display: none;" :value="modelValue" @change="$emit('update:modelValue', value)" >
+    <select style="display: none;" v-model="selected" >
       <option v-for="option in options" :value="option.value" >{{ option.text }}</option>
     </select>
   </div>
@@ -60,16 +60,8 @@ export default {
   },
 
   computed: {
-    dropdownStateClass: function () {
-      return this.opened ? "dropdown_opened" : "";
-    },
-
-    itemClass: function(){
-      return this.options.filter(x => x.icon !== undefined)?.length > 0 ? "dropdown__item_icon" : "";
-    },
-
-    dropdownIcon: function() {
-      return this.options.filter(x => x.icon !== undefined)?.length > 0 ? "dropdown__toggle_icon" : "";
+    hasIcon: function() {
+      return this.options.filter(x => x.icon !== undefined)?.length > 0;
     },
 
     selectedTitle: function() {
@@ -79,6 +71,15 @@ export default {
     selectedItem: function() {
       return this.options.find(x => x.value === this.modelValue);
     },
+
+    selected:{
+      get () {
+        return this.modelValue;
+      },
+      set (value) {
+        return this.$emit('update:modelValue', value);
+      }
+    }
   },
 
   components: { UiIcon },

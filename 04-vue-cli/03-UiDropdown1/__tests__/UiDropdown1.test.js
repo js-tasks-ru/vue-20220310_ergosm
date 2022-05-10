@@ -170,7 +170,7 @@ describe('vue-cli/UiDropdown1', () => {
       expect(wrapper.get('select').element.value).toBe(OPTIONS[1].value);
     });
 
-    /*
+
     it('UiDropdown должен порождать событие обновления модели при обновлении значения на скрытом <select>', async () => {
       const wrapper = mount(UiDropdown, {
         props: { options: OPTIONS, title: TITLE, modelValue: OPTIONS[0].value },
@@ -180,7 +180,7 @@ describe('vue-cli/UiDropdown1', () => {
       expect(wrapper.emitted('update:modelValue')).toBeTruthy();
       expect(wrapper.emitted('update:modelValue').length).toBe(1);
       expect(wrapper.emitted('update:modelValue')[0]).toEqual([OPTIONS[1].value]);
-    });*/
+    });
 
 
   });
