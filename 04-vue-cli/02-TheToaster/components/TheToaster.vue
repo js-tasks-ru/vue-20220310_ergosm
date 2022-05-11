@@ -1,13 +1,8 @@
 <template>
   <div class="toasts">
-    <div class="toast toast_success">
-      <ui-icon class="toast__icon" icon="check-circle" />
-      <span>Success Toast Example</span>
-    </div>
-
-    <div class="toast toast_error">
-      <ui-icon class="toast__icon" icon="alert-circle" />
-      <span>Error Toast Example</span>
+    <div class="toast" v-for="toast in toasts" :class="toast.Class">
+      <ui-icon class="toast__icon" :icon="toast.Icon" />
+      <span>{{ toast.Message }}</span>
     </div>
   </div>
 </template>
@@ -15,10 +10,38 @@
 <script>
 import UiIcon from './UiIcon';
 
+
 export default {
   name: 'TheToaster',
 
+  data() {
+    return {
+      toasts: []
+    };
+  },
+
   components: { UiIcon },
+
+  methods: {
+    success(message) {
+      this.addToast(message, "toast_success", "check-circle", 5000);
+    },
+
+    error(message) {
+      this.addToast(message, "toast_error", "alert-circle", 5000);
+    },
+
+    addToast(message, className, icon, removingDelay) {
+      this.toasts.push({ Message: message, Class: className, Icon: icon });
+      this.clearToasts(this.toasts, removingDelay);
+    },
+
+    removeToast() {
+
+    },
+
+    clearToasts: (toasts, delay) => setTimeout(() => toasts.shift(), delay)
+  }
 };
 </script>
 
