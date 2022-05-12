@@ -1,4 +1,4 @@
-# AuthPages - основы VueRouter
+ # AuthPages - основы VueRouter
 
 👶🏻 _Несложная задача_\
 💼 _Часть проекта_
